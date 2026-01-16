@@ -1,0 +1,76 @@
+name: Validate OpenAPI & Generate SDKs
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Validate OpenAPI Specification
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        
+    - name: Install OpenAPI Generator CLI
+      run: npm install -g @openapitools/openapi-generator-cli
+      
+    - name: Validate OpenAPI spec
+      run: |
+        openapi-generator-cli validate -i openapi.yaml
+        
+  generate-sdk:
+    name: Generate TypeScript SDK
+    runs-on: ubuntu-latest
+    needs: validate
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        
+    - name: Install Python dependencies
+      run: |
+        pip install pyyaml
+        
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        
+    - name: Install OpenAPI Generator CLI
+      run: npm install -g @openapitools/openapi-generator-cli
+      
+    - name: Generate TypeScript SDK
+      run: make sdk
+      
+    - name: Upload SDK artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: typescript-sdk
+        path: generated_sdks/typescript/
+        retention-days: 30
+        
+    - name: Check for changes
+      id: verify-changed-files
+      run: |
+        if [ -d "generated_sdks/typescript" ]; then
+          echo "SDK generated successfully"
+          ls -la generated_sdks/typescript/
+        else
+          echo "SDK generation failed"
+          exit 1
+        fi
