@@ -1,0 +1,95 @@
+name: Upload to Stainless
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'openapi.yaml'
+  workflow_dispatch:
+
+jobs:
+  upload:
+    name: Upload OpenAPI Spec to Stainless
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        
+    - name: Install Python dependencies
+      run: |
+        pip install pyyaml requests
+        
+    - name: Generate sanitized spec
+      run: |
+        python3 scripts/generate_sdk.py --help || true
+        # Create a standalone script to generate sanitized spec
+        python3 << 'EOF'
+        import yaml
+        from pathlib import Path
+        
+        class NoAliasDumper(yaml.Dumper):
+            def ignore_aliases(self, data):
+                return True
+        
+        def filter_out_oai_keys(obj):
+            oai_keys = [key for key in obj if key.startswith("oai")]
+            for oai_key in oai_keys:
+                del obj[oai_key]
+        
+        def sanitize_spec_object(obj):
+            if isinstance(obj, dict):
+                filter_out_oai_keys(obj)
+                for item in obj.values():
+                    sanitize_spec_object(item)
+            elif isinstance(obj, list):
+                for item in obj:
+                    sanitize_spec_object(item)
+        
+        # Load and sanitize
+        with open('openapi.yaml', 'r') as f:
+            spec = yaml.safe_load(f)
+        
+        sanitize_spec_object(spec)
+        
+        # Save sanitized version
+        with open('openapi-sanitized.yaml', 'w') as f:
+            yaml.dump(spec, f, Dumper=NoAliasDumper, sort_keys=False)
+        
+        print("✅ Sanitized spec generated")
+        EOF
+        
+    - name: Upload to Stainless
+      env:
+        STAINLESS_API_KEY: ${{ secrets.STAINLESS_API_KEY }}
+      run: |
+        if [ -z "$STAINLESS_API_KEY" ]; then
+          echo "⚠️  STAINLESS_API_KEY secret not set"
+          echo "Please add your Stainless API key to repository secrets"
+          exit 0
+        fi
+        
+        # Upload the sanitized spec to Stainless
+        curl -X POST https://api.stainlessapi.com/v1/specs \
+          -H "Authorization: Bearer $STAINLESS_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d @- << EOF
+        {
+          "name": "khulnasoft-api",
+          "spec": $(cat openapi-sanitized.yaml | python3 -c 'import sys, json; print(json.dumps(sys.stdin.read()))')
+        }
+        EOF
+        
+        echo "✅ Uploaded to Stainless"
+        
+    - name: Upload sanitized spec as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: sanitized-openapi-spec
+        path: openapi-sanitized.yaml
+        retention-days: 30

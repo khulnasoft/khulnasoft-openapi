@@ -83,6 +83,7 @@ python3 scripts/generate_sdk.py --sdk node --output ./my-custom-output
 - `-s, --sdk` - SDK type to generate (currently supported: `node`)
 - `-o, --output` - Output directory for the generated SDK
 
+
 ### Cleaning Generated Files
 
 Remove all generated SDK files:
@@ -90,6 +91,30 @@ Remove all generated SDK files:
 ```bash
 make clean
 ```
+
+## Stainless Integration
+
+This repository includes automatic integration with [Stainless](https://www.stainlessapi.com/) for advanced SDK generation.
+
+### Automatic Upload
+
+The OpenAPI spec is automatically uploaded to Stainless when:
+- Changes are pushed to the `main` branch that modify `openapi.yaml`
+- The workflow is manually triggered
+
+### Setup
+
+To enable Stainless integration:
+
+1. Get your Stainless API key from [stainlessapi.com](https://www.stainlessapi.com/)
+2. Add it as a repository secret named `STAINLESS_API_KEY`:
+   - Go to repository Settings → Secrets and variables → Actions
+   - Click "New repository secret"
+   - Name: `STAINLESS_API_KEY`
+   - Value: Your Stainless API key
+
+Once configured, the workflow will automatically upload the sanitized OpenAPI spec to Stainless on every update.
+
 
 ## Project Structure
 
