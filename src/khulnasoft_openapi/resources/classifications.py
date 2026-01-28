@@ -30,7 +30,7 @@ class ClassificationsResource(SyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/khulnasoft-openapi-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/khulnasoft/khulnasoft-openapi#accessing-raw-response-data-eg-headers
         """
         return ClassificationsResourceWithRawResponse(self)
 
@@ -39,7 +39,7 @@ class ClassificationsResource(SyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/khulnasoft-openapi-python#with_streaming_response
+        For more information, see https://www.github.com/khulnasoft/khulnasoft-openapi#with_streaming_response
         """
         return ClassificationsResourceWithStreamingResponse(self)
 
@@ -192,7 +192,7 @@ class AsyncClassificationsResource(AsyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/khulnasoft-openapi-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/khulnasoft/khulnasoft-openapi#accessing-raw-response-data-eg-headers
         """
         return AsyncClassificationsResourceWithRawResponse(self)
 
@@ -201,7 +201,7 @@ class AsyncClassificationsResource(AsyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/khulnasoft-openapi-python#with_streaming_response
+        For more information, see https://www.github.com/khulnasoft/khulnasoft-openapi#with_streaming_response
         """
         return AsyncClassificationsResourceWithStreamingResponse(self)
 
