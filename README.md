@@ -1,186 +1,384 @@
-# khulnasoft-openapi
+# Khulnasoft OpenAPI Python API library
 
-📘 OpenAPI specification for the KhulnaSoft API, providing a clear, standardized contract for developers. Includes endpoints, schemas, authentication, and examples to enable seamless integration, testing, and SDK generation. 🚀
+<!-- prettier-ignore -->
+[![PyPI version](https://img.shields.io/pypi/v/khulnasoft_openapi.svg?label=pypi%20(stable))](https://pypi.org/project/khulnasoft_openapi/)
 
-## Table of Contents
+The Khulnasoft OpenAPI Python library provides convenient access to the Khulnasoft OpenAPI REST API from any Python 3.9+
+application. The library includes type definitions for all request params and response fields,
+and offers both synchronous and asynchronous clients powered by [httpx](https://github.com/encode/httpx).
 
-- [Overview](#overview)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Quick Start](#quick-start)
-  - [Manual SDK Generation](#manual-sdk-generation)
-  - [Cleaning Generated Files](#cleaning-generated-files)
-- [Project Structure](#project-structure)
-- [Development](#development)
-- [Contributing](#contributing)
-- [License](#license)
+It is generated with [Stainless](https://www.stainless.com/).
 
-## Overview
+## Documentation
 
-This repository contains the OpenAPI 3.0 specification for the KhulnaSoft API and tools to generate client SDKs in various programming languages. The specification defines all available endpoints, request/response schemas, authentication methods, and provides examples for easy integration.
-
-## Prerequisites
-
-Before you begin, ensure you have the following installed:
-
-- **Python 3.7+** - For running the SDK generation script
-- **PyYAML** - Python YAML parser (install via `pip3 install pyyaml`)
-- **OpenAPI Generator** - Tool for generating SDKs from OpenAPI specs
-
-### Installing OpenAPI Generator
-
-You can install OpenAPI Generator using either **Homebrew** or **npm**:
-
-#### Option 1: Homebrew (macOS/Linux)
-```bash
-brew install openapi-generator
-```
-
-#### Option 2: npm (Cross-platform)
-```bash
-npm install -g @openapitools/openapi-generator-cli
-```
-
-The SDK generation script automatically detects which installation method you used.
+The full API of this library can be found in [api.md](api.md).
 
 ## Installation
 
-1. Clone this repository:
-```bash
-git clone https://github.com/khulnasoft/khulnasoft-openapi.git
-cd khulnasoft-openapi
+```sh
+# install from PyPI
+pip install khulnasoft_openapi
 ```
-
-2. Install Python dependencies:
-```bash
-pip3 install pyyaml
-```
-
-3. Install OpenAPI Generator (see [Prerequisites](#prerequisites))
 
 ## Usage
 
-### Quick Start
+The full API of this library can be found in [api.md](api.md).
 
-Generate a TypeScript SDK using the Makefile:
-
-```bash
-make sdk
-```
-
-This will create a TypeScript/Axios SDK in `generated_sdks/typescript/`.
-
-### Manual SDK Generation
-
-You can also use the Python script directly for more control:
-
-```bash
-python3 scripts/generate_sdk.py --sdk node --output ./my-custom-output
-```
-
-**Arguments:**
-- `-s, --sdk` - SDK type to generate (currently supported: `node`)
-- `-o, --output` - Output directory for the generated SDK
-
-
-### Cleaning Generated Files
-
-Remove all generated SDK files:
-
-```bash
-make clean
-```
-
-## Stainless Integration
-
-This repository includes automatic integration with [Stainless](https://www.stainlessapi.com/) for advanced SDK generation.
-
-### Automatic Upload
-
-The OpenAPI spec is automatically uploaded to Stainless when:
-- Changes are pushed to the `main` branch that modify `openapi.yaml`
-- The workflow is manually triggered
-
-### Setup
-
-To enable Stainless integration:
-
-1. Get your Stainless API key from [stainlessapi.com](https://www.stainlessapi.com/)
-2. Add it as a repository secret named `STAINLESS_API_KEY`:
-   - Go to repository Settings → Secrets and variables → Actions
-   - Click "New repository secret"
-   - Name: `STAINLESS_API_KEY`
-   - Value: Your Stainless API key
-
-Once configured, the workflow will automatically upload the sanitized OpenAPI spec to Stainless on every update.
-
-
-## Project Structure
-
-```
-khulnasoft-openapi/
-├── openapi.yaml                    # Main OpenAPI 3.0 specification
-├── scripts/
-│   └── generate_sdk.py            # SDK generation script
-├── sdk-template-overrides/
-│   └── typescript-axios/          # Custom templates for TypeScript SDK
-│       ├── apiInner.mustache
-│       └── configuration.mustache
-├── generated_sdks/                # Generated SDKs (gitignored)
-├── Makefile                       # Convenience commands
-├── .gitignore                     # Git ignore rules
-└── README.md                      # This file
-```
-
-## Development
-
-### How the SDK Generation Works
-
-1. **Sanitization**: The script reads `openapi.yaml` and performs sanitization:
-   - Removes custom `oai*` keys (used for documentation)
-   - Fixes null defaults for objects/arrays
-   - Handles nested array types
-
-2. **Generation**: Uses OpenAPI Generator to create SDK code from the sanitized spec
-
-3. **Cleanup**: Removes temporary files automatically
-
-### Modifying the OpenAPI Spec
-
-Edit `openapi.yaml` to add or modify API endpoints. The spec follows OpenAPI 3.0 standards.
-
-Custom metadata can be added using keys starting with `oai` - these will be automatically filtered out during SDK generation.
-
-### Adding Support for New Languages
-
-To add support for additional SDK languages, modify `scripts/generate_sdk.py`:
-
-1. Add a new condition in the `generate_sdk()` function
-2. Specify the appropriate OpenAPI Generator language flag
-3. Optionally add custom templates in `sdk-template-overrides/`
-
-Example:
 ```python
-elif sdk_type == "python":
-    command = [
-        generator_cmd, "generate",
-        "-i", str(sanitized_spec_path),
-        "-g", "python",
-        "-o", str(output_dir),
-    ]
+import os
+from khulnasoft_openapi import KhulnasoftOpenAPI
+
+client = KhulnasoftOpenAPI(
+    api_key=os.environ.get("KHULNASOFT_OPENAPI_API_KEY"),  # This is the default and can be omitted
+)
+
+engines = client.engines.list()
+print(engines.data)
 ```
+
+While you can provide an `api_key` keyword argument,
+we recommend using [python-dotenv](https://pypi.org/project/python-dotenv/)
+to add `KHULNASOFT_OPENAPI_API_KEY="My API Key"` to your `.env` file
+so that your API Key is not stored in source control.
+
+## Async usage
+
+Simply import `AsyncKhulnasoftOpenAPI` instead of `KhulnasoftOpenAPI` and use `await` with each API call:
+
+```python
+import os
+import asyncio
+from khulnasoft_openapi import AsyncKhulnasoftOpenAPI
+
+client = AsyncKhulnasoftOpenAPI(
+    api_key=os.environ.get("KHULNASOFT_OPENAPI_API_KEY"),  # This is the default and can be omitted
+)
+
+
+async def main() -> None:
+    engines = await client.engines.list()
+    print(engines.data)
+
+
+asyncio.run(main())
+```
+
+Functionality between the synchronous and asynchronous clients is otherwise identical.
+
+### With aiohttp
+
+By default, the async client uses `httpx` for HTTP requests. However, for improved concurrency performance you may also use `aiohttp` as the HTTP backend.
+
+You can enable this by installing `aiohttp`:
+
+```sh
+# install from PyPI
+pip install khulnasoft_openapi[aiohttp]
+```
+
+Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
+
+```python
+import os
+import asyncio
+from khulnasoft_openapi import DefaultAioHttpClient
+from khulnasoft_openapi import AsyncKhulnasoftOpenAPI
+
+
+async def main() -> None:
+    async with AsyncKhulnasoftOpenAPI(
+        api_key=os.environ.get(
+            "KHULNASOFT_OPENAPI_API_KEY"
+        ),  # This is the default and can be omitted
+        http_client=DefaultAioHttpClient(),
+    ) as client:
+        engines = await client.engines.list()
+        print(engines.data)
+
+
+asyncio.run(main())
+```
+
+## Using types
+
+Nested request parameters are [TypedDicts](https://docs.python.org/3/library/typing.html#typing.TypedDict). Responses are [Pydantic models](https://docs.pydantic.dev) which also provide helper methods for things like:
+
+- Serializing back into JSON, `model.to_json()`
+- Converting to a dictionary, `model.to_dict()`
+
+Typed requests and responses provide autocomplete and documentation within your editor. If you would like to see type errors in VS Code to help catch bugs earlier, set `python.analysis.typeCheckingMode` to `basic`.
+
+## File uploads
+
+Request parameters that correspond to file uploads can be passed as `bytes`, or a [`PathLike`](https://docs.python.org/3/library/os.html#os.PathLike) instance or a tuple of `(filename, contents, media type)`.
+
+```python
+from pathlib import Path
+from khulnasoft_openapi import KhulnasoftOpenAPI
+
+client = KhulnasoftOpenAPI()
+
+client.files.upload(
+    file=Path("/path/to/file"),
+    purpose="purpose",
+)
+```
+
+The async client uses the exact same interface. If you pass a [`PathLike`](https://docs.python.org/3/library/os.html#os.PathLike) instance, the file contents will be read asynchronously automatically.
+
+## Handling errors
+
+When the library is unable to connect to the API (for example, due to network connection problems or a timeout), a subclass of `khulnasoft_openapi.APIConnectionError` is raised.
+
+When the API returns a non-success status code (that is, 4xx or 5xx
+response), a subclass of `khulnasoft_openapi.APIStatusError` is raised, containing `status_code` and `response` properties.
+
+All errors inherit from `khulnasoft_openapi.APIError`.
+
+```python
+import khulnasoft_openapi
+from khulnasoft_openapi import KhulnasoftOpenAPI
+
+client = KhulnasoftOpenAPI()
+
+try:
+    client.engines.list()
+except khulnasoft_openapi.APIConnectionError as e:
+    print("The server could not be reached")
+    print(e.__cause__)  # an underlying Exception, likely raised within httpx.
+except khulnasoft_openapi.RateLimitError as e:
+    print("A 429 status code was received; we should back off a bit.")
+except khulnasoft_openapi.APIStatusError as e:
+    print("Another non-200-range status code was received")
+    print(e.status_code)
+    print(e.response)
+```
+
+Error codes are as follows:
+
+| Status Code | Error Type                 |
+| ----------- | -------------------------- |
+| 400         | `BadRequestError`          |
+| 401         | `AuthenticationError`      |
+| 403         | `PermissionDeniedError`    |
+| 404         | `NotFoundError`            |
+| 422         | `UnprocessableEntityError` |
+| 429         | `RateLimitError`           |
+| >=500       | `InternalServerError`      |
+| N/A         | `APIConnectionError`       |
+
+### Retries
+
+Certain errors are automatically retried 2 times by default, with a short exponential backoff.
+Connection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict,
+429 Rate Limit, and >=500 Internal errors are all retried by default.
+
+You can use the `max_retries` option to configure or disable retry settings:
+
+```python
+from khulnasoft_openapi import KhulnasoftOpenAPI
+
+# Configure the default for all requests:
+client = KhulnasoftOpenAPI(
+    # default is 2
+    max_retries=0,
+)
+
+# Or, configure per-request:
+client.with_options(max_retries=5).engines.list()
+```
+
+### Timeouts
+
+By default requests time out after 1 minute. You can configure this with a `timeout` option,
+which accepts a float or an [`httpx.Timeout`](https://www.python-httpx.org/advanced/timeouts/#fine-tuning-the-configuration) object:
+
+```python
+from khulnasoft_openapi import KhulnasoftOpenAPI
+
+# Configure the default for all requests:
+client = KhulnasoftOpenAPI(
+    # 20 seconds (default is 1 minute)
+    timeout=20.0,
+)
+
+# More granular control:
+client = KhulnasoftOpenAPI(
+    timeout=httpx.Timeout(60.0, read=5.0, write=10.0, connect=2.0),
+)
+
+# Override per-request:
+client.with_options(timeout=5.0).engines.list()
+```
+
+On timeout, an `APITimeoutError` is thrown.
+
+Note that requests that time out are [retried twice by default](#retries).
+
+## Advanced
+
+### Logging
+
+We use the standard library [`logging`](https://docs.python.org/3/library/logging.html) module.
+
+You can enable logging by setting the environment variable `KHULNASOFT_OPENAPI_LOG` to `info`.
+
+```shell
+$ export KHULNASOFT_OPENAPI_LOG=info
+```
+
+Or to `debug` for more verbose logging.
+
+### How to tell whether `None` means `null` or missing
+
+In an API response, a field may be explicitly `null`, or missing entirely; in either case, its value is `None` in this library. You can differentiate the two cases with `.model_fields_set`:
+
+```py
+if response.my_field is None:
+  if 'my_field' not in response.model_fields_set:
+    print('Got json like {}, without a "my_field" key present at all.')
+  else:
+    print('Got json like {"my_field": null}.')
+```
+
+### Accessing raw response data (e.g. headers)
+
+The "raw" Response object can be accessed by prefixing `.with_raw_response.` to any HTTP method call, e.g.,
+
+```py
+from khulnasoft_openapi import KhulnasoftOpenAPI
+
+client = KhulnasoftOpenAPI()
+response = client.engines.with_raw_response.list()
+print(response.headers.get('X-My-Header'))
+
+engine = response.parse()  # get the object that `engines.list()` would have returned
+print(engine.data)
+```
+
+These methods return an [`APIResponse`](https://github.com/khulnasoft/khulnasoft-openapi/tree/main/src/khulnasoft_openapi/_response.py) object.
+
+The async client returns an [`AsyncAPIResponse`](https://github.com/khulnasoft/khulnasoft-openapi/tree/main/src/khulnasoft_openapi/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.
+
+#### `.with_streaming_response`
+
+The above interface eagerly reads the full response body when you make the request, which may not always be what you want.
+
+To stream the response body, use `.with_streaming_response` instead, which requires a context manager and only reads the response body once you call `.read()`, `.text()`, `.json()`, `.iter_bytes()`, `.iter_text()`, `.iter_lines()` or `.parse()`. In the async client, these are async methods.
+
+```python
+with client.engines.with_streaming_response.list() as response:
+    print(response.headers.get("X-My-Header"))
+
+    for line in response.iter_lines():
+        print(line)
+```
+
+The context manager is required so that the response will reliably be closed.
+
+### Making custom/undocumented requests
+
+This library is typed for convenient access to the documented API.
+
+If you need to access undocumented endpoints, params, or response properties, the library can still be used.
+
+#### Undocumented endpoints
+
+To make requests to undocumented endpoints, you can make requests using `client.get`, `client.post`, and other
+http verbs. Options on the client will be respected (such as retries) when making this request.
+
+```py
+import httpx
+
+response = client.post(
+    "/foo",
+    cast_to=httpx.Response,
+    body={"my_param": True},
+)
+
+print(response.headers.get("x-foo"))
+```
+
+#### Undocumented request params
+
+If you want to explicitly send an extra param, you can do so with the `extra_query`, `extra_body`, and `extra_headers` request
+options.
+
+#### Undocumented response properties
+
+To access undocumented response properties, you can access the extra fields like `response.unknown_prop`. You
+can also get all the extra fields on the Pydantic model as a dict with
+[`response.model_extra`](https://docs.pydantic.dev/latest/api/base_model/#pydantic.BaseModel.model_extra).
+
+### Configuring the HTTP client
+
+You can directly override the [httpx client](https://www.python-httpx.org/api/#client) to customize it for your use case, including:
+
+- Support for [proxies](https://www.python-httpx.org/advanced/proxies/)
+- Custom [transports](https://www.python-httpx.org/advanced/transports/)
+- Additional [advanced](https://www.python-httpx.org/advanced/clients/) functionality
+
+```python
+import httpx
+from khulnasoft_openapi import KhulnasoftOpenAPI, DefaultHttpxClient
+
+client = KhulnasoftOpenAPI(
+    # Or use the `KHULNASOFT_OPENAPI_BASE_URL` env var
+    base_url="http://my.test.server.example.com:8083",
+    http_client=DefaultHttpxClient(
+        proxy="http://my.test.proxy.example.com",
+        transport=httpx.HTTPTransport(local_address="0.0.0.0"),
+    ),
+)
+```
+
+You can also customize the client on a per-request basis by using `with_options()`:
+
+```python
+client.with_options(http_client=DefaultHttpxClient(...))
+```
+
+### Managing HTTP resources
+
+By default the library closes underlying HTTP connections whenever the client is [garbage collected](https://docs.python.org/3/reference/datamodel.html#object.__del__). You can manually close the client using the `.close()` method if desired, or with a context manager that closes when exiting.
+
+```py
+from khulnasoft_openapi import KhulnasoftOpenAPI
+
+with KhulnasoftOpenAPI() as client:
+  # make requests here
+  ...
+
+# HTTP client is now closed
+```
+
+## Versioning
+
+This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:
+
+1. Changes that only affect static types, without breaking runtime behavior.
+2. Changes to library internals which are technically public but not intended or documented for external use. _(Please open a GitHub issue to let us know if you are relying on such internals.)_
+3. Changes that we do not expect to impact the vast majority of users in practice.
+
+We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
+
+We are keen for your feedback; please open an [issue](https://www.github.com/khulnasoft/khulnasoft-openapi/issues) with questions, bugs, or suggestions.
+
+### Determining the installed version
+
+If you've upgraded to the latest version but aren't seeing any new features you were expecting then your python environment is likely still using an older version.
+
+You can determine the version that is being used at runtime with:
+
+```py
+import khulnasoft_openapi
+print(khulnasoft_openapi.__version__)
+```
+
+## Requirements
+
+Python 3.9 or higher.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-See the [LICENSE](LICENSE) file for details.
+See [the contributing documentation](./CONTRIBUTING.md).

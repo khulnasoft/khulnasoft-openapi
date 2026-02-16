@@ -1,195 +1,128 @@
-# Contributing to khulnasoft-openapi
+## Setting up the environment
 
-Thank you for your interest in contributing to the KhulnaSoft OpenAPI specification! This document provides guidelines and instructions for contributing.
+### With `uv`
 
-## Table of Contents
+We use [uv](https://docs.astral.sh/uv/) to manage dependencies because it will automatically provision a Python environment with the expected Python version. To set it up, run:
 
-- [Code of Conduct](#code-of-conduct)
-- [How Can I Contribute?](#how-can-i-contribute)
-- [Development Setup](#development-setup)
-- [Making Changes](#making-changes)
-- [Submitting Changes](#submitting-changes)
-- [Style Guidelines](#style-guidelines)
-
-## Code of Conduct
-
-This project adheres to a code of conduct. By participating, you are expected to uphold this code. Please report unacceptable behavior to the project maintainers.
-
-## How Can I Contribute?
-
-### Reporting Bugs
-
-Before creating bug reports, please check existing issues to avoid duplicates. When creating a bug report, include:
-
-- **Clear title and description**
-- **Steps to reproduce** the issue
-- **Expected behavior** vs actual behavior
-- **OpenAPI Generator version** and SDK language
-- **Error messages** or logs
-
-### Suggesting Enhancements
-
-Enhancement suggestions are tracked as GitHub issues. When creating an enhancement suggestion, include:
-
-- **Clear title and description**
-- **Use case** explaining why this enhancement would be useful
-- **Examples** of how the enhancement would work
-
-### Adding New Endpoints
-
-To add a new endpoint to the OpenAPI specification:
-
-1. Follow the OpenAPI 3.0 specification format
-2. Include complete request/response schemas
-3. Add examples for all operations
-4. Document authentication requirements
-5. Test SDK generation with your changes
-
-### Adding Support for New SDK Languages
-
-To add support for a new programming language:
-
-1. Update `scripts/generate_sdk.py` with the new language
-2. Add any custom templates to `sdk-template-overrides/`
-3. Update the README with the new language
-4. Test the SDK generation thoroughly
-
-## Development Setup
-
-1. **Fork and clone the repository**
-   ```bash
-   git clone https://github.com/YOUR-USERNAME/khulnasoft-openapi.git
-   cd khulnasoft-openapi
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pip3 install pyyaml
-   npm install -g @openapitools/openapi-generator-cli
-   ```
-
-3. **Create a branch**
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-
-## Making Changes
-
-### Modifying the OpenAPI Specification
-
-1. Edit `openapi.yaml` following OpenAPI 3.0 standards
-2. Validate your changes:
-   ```bash
-   openapi-generator-cli validate -i openapi.yaml
-   ```
-3. Test SDK generation:
-   ```bash
-   make sdk
-   ```
-
-### OpenAPI Best Practices
-
-- **Use descriptive operationIds** - These become method names in SDKs
-- **Include examples** - Helps developers understand the API
-- **Document all parameters** - Include descriptions and constraints
-- **Use schemas** - Define reusable components in `#/components/schemas`
-- **Add response codes** - Document all possible HTTP responses
-- **Security schemes** - Clearly define authentication methods
-
-### Custom Metadata
-
-You can add custom metadata for documentation using keys starting with `oai`:
-
-```yaml
-paths:
-  /example:
-    get:
-      operationId: getExample
-      oaiMeta:
-        name: Get Example
-        group: examples
-        examples:
-          curl: |
-            curl https://api.khulnasoft.com/v1/example
+```sh
+$ ./scripts/bootstrap
 ```
 
-These keys are automatically filtered out during SDK generation.
+Or [install uv manually](https://docs.astral.sh/uv/getting-started/installation/) and run:
 
-## Submitting Changes
-
-### Pull Request Process
-
-1. **Update documentation** - Ensure README and other docs reflect your changes
-2. **Test thoroughly** - Run `make sdk` to verify SDK generation works
-3. **Commit with clear messages** - Follow conventional commit format:
-   ```
-   feat: add new endpoint for user management
-   fix: correct response schema for completions
-   docs: update README with new examples
-   ```
-4. **Push to your fork**
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-5. **Create a Pull Request** - Provide a clear description of changes
-
-### PR Checklist
-
-- [ ] OpenAPI spec validates successfully
-- [ ] SDK generation works without errors
-- [ ] Documentation updated (README, inline comments)
-- [ ] Examples provided for new endpoints
-- [ ] Commit messages are clear and descriptive
-- [ ] No breaking changes (or clearly documented if necessary)
-
-## Style Guidelines
-
-### YAML Style
-
-- Use 2 spaces for indentation
-- Keep lines under 100 characters when possible
-- Use descriptive names for schemas and operations
-- Order properties alphabetically within objects (when logical)
-- Add comments for complex schemas
-
-### Example
-
-```yaml
-paths:
-  /users/{userId}:
-    get:
-      operationId: getUser
-      summary: Retrieve a user by ID
-      parameters:
-        - in: path
-          name: userId
-          required: true
-          schema:
-            type: string
-          description: The unique identifier for the user
-      responses:
-        "200":
-          description: User retrieved successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        "404":
-          description: User not found
+```sh
+$ uv sync --all-extras
 ```
 
-### Python Style
+You can then run scripts using `uv run python script.py` or by manually activating the virtual environment:
 
-For changes to `scripts/generate_sdk.py`:
+```sh
+# manually activate - https://docs.python.org/3/library/venv.html#how-venvs-work
+$ source .venv/bin/activate
 
-- Follow PEP 8 style guidelines
-- Use type hints where appropriate
-- Add docstrings to functions
-- Keep functions focused and single-purpose
-- Use pathlib for file operations
+# now you can omit the `uv run` prefix
+$ python script.py
+```
 
-## Questions?
+### Without `uv`
 
-Feel free to open an issue with the `question` label if you need help or clarification.
+Alternatively if you don't want to install `uv`, you can stick with the standard `pip` setup by ensuring you have the Python version specified in `.python-version`, create a virtual environment however you desire and then install dependencies using this command:
 
-Thank you for contributing! 🚀
+```sh
+$ pip install -r requirements-dev.lock
+```
+
+## Modifying/Adding code
+
+Most of the SDK is generated code. Modifications to code will be persisted between generations, but may
+result in merge conflicts between manual patches and changes from the generator. The generator will never
+modify the contents of the `src/khulnasoft_openapi/lib/` and `examples/` directories.
+
+## Adding and running examples
+
+All files in the `examples/` directory are not modified by the generator and can be freely edited or added to.
+
+```py
+# add an example to examples/<your-example>.py
+
+#!/usr/bin/env -S uv run python
+…
+```
+
+```sh
+$ chmod +x examples/<your-example>.py
+# run the example against your api
+$ ./examples/<your-example>.py
+```
+
+## Using the repository from source
+
+If you’d like to use the repository from source, you can either install from git or link to a cloned repository:
+
+To install via git:
+
+```sh
+$ pip install git+ssh://git@github.com/khulnasoft/khulnasoft-openapi.git
+```
+
+Alternatively, you can build from source and install the wheel file:
+
+Building this package will create two files in the `dist/` directory, a `.tar.gz` containing the source files and a `.whl` that can be used to install the package efficiently.
+
+To create a distributable version of the library, all you have to do is run this command:
+
+```sh
+$ uv build
+# or
+$ python -m build
+```
+
+Then to install:
+
+```sh
+$ pip install ./path-to-wheel-file.whl
+```
+
+## Running tests
+
+Most tests require you to [set up a mock server](https://github.com/stoplightio/prism) against the OpenAPI spec to run the tests.
+
+```sh
+# you will need npm installed
+$ npx prism mock path/to/your/openapi.yml
+```
+
+```sh
+$ ./scripts/test
+```
+
+## Linting and formatting
+
+This repository uses [ruff](https://github.com/astral-sh/ruff) and
+[black](https://github.com/psf/black) to format the code in the repository.
+
+To lint:
+
+```sh
+$ ./scripts/lint
+```
+
+To format and fix all ruff issues automatically:
+
+```sh
+$ ./scripts/format
+```
+
+## Publishing and releases
+
+Changes made to this repository via the automated release PR pipeline should publish to PyPI automatically. If
+the changes aren't made through the automated pipeline, you may want to make releases manually.
+
+### Publish with a GitHub workflow
+
+You can release to package managers by using [the `Publish PyPI` GitHub action](https://www.github.com/khulnasoft/khulnasoft-openapi/actions/workflows/publish-pypi.yml). This requires a setup organization or repository secret to be set up.
+
+### Publish manually
+
+If you need to manually release a package, you can run the `bin/publish-pypi` script with a `PYPI_TOKEN` set on
+the environment.
