@@ -17,13 +17,13 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestAnswers:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_create(self, client: KhulnasoftOpenAPI) -> None:
         answer = client.answers.create()
         assert_matches_type(AnswerCreateResponse, answer, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_create_with_all_params(self, client: KhulnasoftOpenAPI) -> None:
         answer = client.answers.create(
@@ -47,7 +47,7 @@ class TestAnswers:
         )
         assert_matches_type(AnswerCreateResponse, answer, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_create(self, client: KhulnasoftOpenAPI) -> None:
         response = client.answers.with_raw_response.create()
@@ -57,7 +57,7 @@ class TestAnswers:
         answer = response.parse()
         assert_matches_type(AnswerCreateResponse, answer, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_create(self, client: KhulnasoftOpenAPI) -> None:
         with client.answers.with_streaming_response.create() as response:
@@ -75,13 +75,13 @@ class TestAsyncAnswers:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_create(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         answer = await async_client.answers.create()
         assert_matches_type(AnswerCreateResponse, answer, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_create_with_all_params(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         answer = await async_client.answers.create(
@@ -105,7 +105,7 @@ class TestAsyncAnswers:
         )
         assert_matches_type(AnswerCreateResponse, answer, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_create(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         response = await async_client.answers.with_raw_response.create()
@@ -115,7 +115,7 @@ class TestAsyncAnswers:
         answer = await response.parse()
         assert_matches_type(AnswerCreateResponse, answer, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_create(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         async with async_client.answers.with_streaming_response.create() as response:
