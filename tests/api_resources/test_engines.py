@@ -23,7 +23,7 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestEngines:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve(self, client: KhulnasoftOpenAPI) -> None:
         engine = client.engines.retrieve(
@@ -31,7 +31,7 @@ class TestEngines:
         )
         assert_matches_type(Engine, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_retrieve(self, client: KhulnasoftOpenAPI) -> None:
         response = client.engines.with_raw_response.retrieve(
@@ -43,7 +43,7 @@ class TestEngines:
         engine = response.parse()
         assert_matches_type(Engine, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_retrieve(self, client: KhulnasoftOpenAPI) -> None:
         with client.engines.with_streaming_response.retrieve(
@@ -57,7 +57,7 @@ class TestEngines:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_retrieve(self, client: KhulnasoftOpenAPI) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `engine_id` but received ''"):
@@ -65,13 +65,13 @@ class TestEngines:
                 "",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list(self, client: KhulnasoftOpenAPI) -> None:
         engine = client.engines.list()
         assert_matches_type(EngineListResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_list(self, client: KhulnasoftOpenAPI) -> None:
         response = client.engines.with_raw_response.list()
@@ -81,7 +81,7 @@ class TestEngines:
         engine = response.parse()
         assert_matches_type(EngineListResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_list(self, client: KhulnasoftOpenAPI) -> None:
         with client.engines.with_streaming_response.list() as response:
@@ -93,7 +93,7 @@ class TestEngines:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_create_completion(self, client: KhulnasoftOpenAPI) -> None:
         engine = client.engines.create_completion(
@@ -101,7 +101,7 @@ class TestEngines:
         )
         assert_matches_type(EngineCreateCompletionResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_create_completion_with_all_params(self, client: KhulnasoftOpenAPI) -> None:
         engine = client.engines.create_completion(
@@ -122,7 +122,7 @@ class TestEngines:
         )
         assert_matches_type(EngineCreateCompletionResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_create_completion(self, client: KhulnasoftOpenAPI) -> None:
         response = client.engines.with_raw_response.create_completion(
@@ -134,7 +134,7 @@ class TestEngines:
         engine = response.parse()
         assert_matches_type(EngineCreateCompletionResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_create_completion(self, client: KhulnasoftOpenAPI) -> None:
         with client.engines.with_streaming_response.create_completion(
@@ -148,7 +148,7 @@ class TestEngines:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_create_completion(self, client: KhulnasoftOpenAPI) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `engine_id` but received ''"):
@@ -156,7 +156,7 @@ class TestEngines:
                 engine_id="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_create_embedding(self, client: KhulnasoftOpenAPI) -> None:
         engine = client.engines.create_embedding(
@@ -164,7 +164,7 @@ class TestEngines:
         )
         assert_matches_type(EngineCreateEmbeddingResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_create_embedding_with_all_params(self, client: KhulnasoftOpenAPI) -> None:
         engine = client.engines.create_embedding(
@@ -173,7 +173,7 @@ class TestEngines:
         )
         assert_matches_type(EngineCreateEmbeddingResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_create_embedding(self, client: KhulnasoftOpenAPI) -> None:
         response = client.engines.with_raw_response.create_embedding(
@@ -185,7 +185,7 @@ class TestEngines:
         engine = response.parse()
         assert_matches_type(EngineCreateEmbeddingResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_create_embedding(self, client: KhulnasoftOpenAPI) -> None:
         with client.engines.with_streaming_response.create_embedding(
@@ -199,7 +199,7 @@ class TestEngines:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_create_embedding(self, client: KhulnasoftOpenAPI) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `engine_id` but received ''"):
@@ -207,7 +207,7 @@ class TestEngines:
                 engine_id="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_search(self, client: KhulnasoftOpenAPI) -> None:
         engine = client.engines.search(
@@ -215,7 +215,7 @@ class TestEngines:
         )
         assert_matches_type(EngineSearchResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_search_with_all_params(self, client: KhulnasoftOpenAPI) -> None:
         engine = client.engines.search(
@@ -228,7 +228,7 @@ class TestEngines:
         )
         assert_matches_type(EngineSearchResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_search(self, client: KhulnasoftOpenAPI) -> None:
         response = client.engines.with_raw_response.search(
@@ -240,7 +240,7 @@ class TestEngines:
         engine = response.parse()
         assert_matches_type(EngineSearchResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_search(self, client: KhulnasoftOpenAPI) -> None:
         with client.engines.with_streaming_response.search(
@@ -254,7 +254,7 @@ class TestEngines:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_search(self, client: KhulnasoftOpenAPI) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `engine_id` but received ''"):
@@ -268,7 +268,7 @@ class TestAsyncEngines:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         engine = await async_client.engines.retrieve(
@@ -276,7 +276,7 @@ class TestAsyncEngines:
         )
         assert_matches_type(Engine, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_retrieve(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         response = await async_client.engines.with_raw_response.retrieve(
@@ -288,7 +288,7 @@ class TestAsyncEngines:
         engine = await response.parse()
         assert_matches_type(Engine, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_retrieve(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         async with async_client.engines.with_streaming_response.retrieve(
@@ -302,7 +302,7 @@ class TestAsyncEngines:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_retrieve(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `engine_id` but received ''"):
@@ -310,13 +310,13 @@ class TestAsyncEngines:
                 "",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         engine = await async_client.engines.list()
         assert_matches_type(EngineListResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_list(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         response = await async_client.engines.with_raw_response.list()
@@ -326,7 +326,7 @@ class TestAsyncEngines:
         engine = await response.parse()
         assert_matches_type(EngineListResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_list(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         async with async_client.engines.with_streaming_response.list() as response:
@@ -338,7 +338,7 @@ class TestAsyncEngines:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_create_completion(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         engine = await async_client.engines.create_completion(
@@ -346,7 +346,7 @@ class TestAsyncEngines:
         )
         assert_matches_type(EngineCreateCompletionResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_create_completion_with_all_params(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         engine = await async_client.engines.create_completion(
@@ -367,7 +367,7 @@ class TestAsyncEngines:
         )
         assert_matches_type(EngineCreateCompletionResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_create_completion(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         response = await async_client.engines.with_raw_response.create_completion(
@@ -379,7 +379,7 @@ class TestAsyncEngines:
         engine = await response.parse()
         assert_matches_type(EngineCreateCompletionResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_create_completion(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         async with async_client.engines.with_streaming_response.create_completion(
@@ -393,7 +393,7 @@ class TestAsyncEngines:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_create_completion(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `engine_id` but received ''"):
@@ -401,7 +401,7 @@ class TestAsyncEngines:
                 engine_id="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_create_embedding(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         engine = await async_client.engines.create_embedding(
@@ -409,7 +409,7 @@ class TestAsyncEngines:
         )
         assert_matches_type(EngineCreateEmbeddingResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_create_embedding_with_all_params(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         engine = await async_client.engines.create_embedding(
@@ -418,7 +418,7 @@ class TestAsyncEngines:
         )
         assert_matches_type(EngineCreateEmbeddingResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_create_embedding(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         response = await async_client.engines.with_raw_response.create_embedding(
@@ -430,7 +430,7 @@ class TestAsyncEngines:
         engine = await response.parse()
         assert_matches_type(EngineCreateEmbeddingResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_create_embedding(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         async with async_client.engines.with_streaming_response.create_embedding(
@@ -444,7 +444,7 @@ class TestAsyncEngines:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_create_embedding(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `engine_id` but received ''"):
@@ -452,7 +452,7 @@ class TestAsyncEngines:
                 engine_id="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_search(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         engine = await async_client.engines.search(
@@ -460,7 +460,7 @@ class TestAsyncEngines:
         )
         assert_matches_type(EngineSearchResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_search_with_all_params(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         engine = await async_client.engines.search(
@@ -473,7 +473,7 @@ class TestAsyncEngines:
         )
         assert_matches_type(EngineSearchResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_search(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         response = await async_client.engines.with_raw_response.search(
@@ -485,7 +485,7 @@ class TestAsyncEngines:
         engine = await response.parse()
         assert_matches_type(EngineSearchResponse, engine, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_search(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         async with async_client.engines.with_streaming_response.search(
@@ -499,7 +499,7 @@ class TestAsyncEngines:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_search(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `engine_id` but received ''"):

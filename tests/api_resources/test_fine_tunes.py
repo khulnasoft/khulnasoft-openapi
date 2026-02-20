@@ -21,13 +21,13 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestFineTunes:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_create(self, client: KhulnasoftOpenAPI) -> None:
         fine_tune = client.fine_tunes.create()
         assert_matches_type(FineTune, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_create_with_all_params(self, client: KhulnasoftOpenAPI) -> None:
         fine_tune = client.fine_tunes.create(
@@ -45,7 +45,7 @@ class TestFineTunes:
         )
         assert_matches_type(FineTune, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_create(self, client: KhulnasoftOpenAPI) -> None:
         response = client.fine_tunes.with_raw_response.create()
@@ -55,7 +55,7 @@ class TestFineTunes:
         fine_tune = response.parse()
         assert_matches_type(FineTune, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_create(self, client: KhulnasoftOpenAPI) -> None:
         with client.fine_tunes.with_streaming_response.create() as response:
@@ -67,7 +67,7 @@ class TestFineTunes:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve(self, client: KhulnasoftOpenAPI) -> None:
         fine_tune = client.fine_tunes.retrieve(
@@ -75,7 +75,7 @@ class TestFineTunes:
         )
         assert_matches_type(FineTune, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_retrieve(self, client: KhulnasoftOpenAPI) -> None:
         response = client.fine_tunes.with_raw_response.retrieve(
@@ -87,7 +87,7 @@ class TestFineTunes:
         fine_tune = response.parse()
         assert_matches_type(FineTune, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_retrieve(self, client: KhulnasoftOpenAPI) -> None:
         with client.fine_tunes.with_streaming_response.retrieve(
@@ -101,7 +101,7 @@ class TestFineTunes:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_retrieve(self, client: KhulnasoftOpenAPI) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `fine_tune_id` but received ''"):
@@ -109,13 +109,13 @@ class TestFineTunes:
                 "",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list(self, client: KhulnasoftOpenAPI) -> None:
         fine_tune = client.fine_tunes.list()
         assert_matches_type(FineTuneListResponse, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_list(self, client: KhulnasoftOpenAPI) -> None:
         response = client.fine_tunes.with_raw_response.list()
@@ -125,7 +125,7 @@ class TestFineTunes:
         fine_tune = response.parse()
         assert_matches_type(FineTuneListResponse, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_list(self, client: KhulnasoftOpenAPI) -> None:
         with client.fine_tunes.with_streaming_response.list() as response:
@@ -137,7 +137,7 @@ class TestFineTunes:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_cancel(self, client: KhulnasoftOpenAPI) -> None:
         fine_tune = client.fine_tunes.cancel(
@@ -145,7 +145,7 @@ class TestFineTunes:
         )
         assert_matches_type(FineTune, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_cancel(self, client: KhulnasoftOpenAPI) -> None:
         response = client.fine_tunes.with_raw_response.cancel(
@@ -157,7 +157,7 @@ class TestFineTunes:
         fine_tune = response.parse()
         assert_matches_type(FineTune, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_cancel(self, client: KhulnasoftOpenAPI) -> None:
         with client.fine_tunes.with_streaming_response.cancel(
@@ -171,7 +171,7 @@ class TestFineTunes:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_cancel(self, client: KhulnasoftOpenAPI) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `fine_tune_id` but received ''"):
@@ -179,7 +179,7 @@ class TestFineTunes:
                 "",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_get_events(self, client: KhulnasoftOpenAPI) -> None:
         fine_tune = client.fine_tunes.get_events(
@@ -187,7 +187,7 @@ class TestFineTunes:
         )
         assert_matches_type(FineTuneGetEventsResponse, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_get_events_with_all_params(self, client: KhulnasoftOpenAPI) -> None:
         fine_tune = client.fine_tunes.get_events(
@@ -196,7 +196,7 @@ class TestFineTunes:
         )
         assert_matches_type(FineTuneGetEventsResponse, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_get_events(self, client: KhulnasoftOpenAPI) -> None:
         response = client.fine_tunes.with_raw_response.get_events(
@@ -208,7 +208,7 @@ class TestFineTunes:
         fine_tune = response.parse()
         assert_matches_type(FineTuneGetEventsResponse, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_get_events(self, client: KhulnasoftOpenAPI) -> None:
         with client.fine_tunes.with_streaming_response.get_events(
@@ -222,7 +222,7 @@ class TestFineTunes:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_get_events(self, client: KhulnasoftOpenAPI) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `fine_tune_id` but received ''"):
@@ -236,13 +236,13 @@ class TestAsyncFineTunes:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_create(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         fine_tune = await async_client.fine_tunes.create()
         assert_matches_type(FineTune, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_create_with_all_params(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         fine_tune = await async_client.fine_tunes.create(
@@ -260,7 +260,7 @@ class TestAsyncFineTunes:
         )
         assert_matches_type(FineTune, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_create(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         response = await async_client.fine_tunes.with_raw_response.create()
@@ -270,7 +270,7 @@ class TestAsyncFineTunes:
         fine_tune = await response.parse()
         assert_matches_type(FineTune, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_create(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         async with async_client.fine_tunes.with_streaming_response.create() as response:
@@ -282,7 +282,7 @@ class TestAsyncFineTunes:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         fine_tune = await async_client.fine_tunes.retrieve(
@@ -290,7 +290,7 @@ class TestAsyncFineTunes:
         )
         assert_matches_type(FineTune, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_retrieve(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         response = await async_client.fine_tunes.with_raw_response.retrieve(
@@ -302,7 +302,7 @@ class TestAsyncFineTunes:
         fine_tune = await response.parse()
         assert_matches_type(FineTune, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_retrieve(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         async with async_client.fine_tunes.with_streaming_response.retrieve(
@@ -316,7 +316,7 @@ class TestAsyncFineTunes:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_retrieve(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `fine_tune_id` but received ''"):
@@ -324,13 +324,13 @@ class TestAsyncFineTunes:
                 "",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         fine_tune = await async_client.fine_tunes.list()
         assert_matches_type(FineTuneListResponse, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_list(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         response = await async_client.fine_tunes.with_raw_response.list()
@@ -340,7 +340,7 @@ class TestAsyncFineTunes:
         fine_tune = await response.parse()
         assert_matches_type(FineTuneListResponse, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_list(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         async with async_client.fine_tunes.with_streaming_response.list() as response:
@@ -352,7 +352,7 @@ class TestAsyncFineTunes:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_cancel(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         fine_tune = await async_client.fine_tunes.cancel(
@@ -360,7 +360,7 @@ class TestAsyncFineTunes:
         )
         assert_matches_type(FineTune, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_cancel(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         response = await async_client.fine_tunes.with_raw_response.cancel(
@@ -372,7 +372,7 @@ class TestAsyncFineTunes:
         fine_tune = await response.parse()
         assert_matches_type(FineTune, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_cancel(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         async with async_client.fine_tunes.with_streaming_response.cancel(
@@ -386,7 +386,7 @@ class TestAsyncFineTunes:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_cancel(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `fine_tune_id` but received ''"):
@@ -394,7 +394,7 @@ class TestAsyncFineTunes:
                 "",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_get_events(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         fine_tune = await async_client.fine_tunes.get_events(
@@ -402,7 +402,7 @@ class TestAsyncFineTunes:
         )
         assert_matches_type(FineTuneGetEventsResponse, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_get_events_with_all_params(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         fine_tune = await async_client.fine_tunes.get_events(
@@ -411,7 +411,7 @@ class TestAsyncFineTunes:
         )
         assert_matches_type(FineTuneGetEventsResponse, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_get_events(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         response = await async_client.fine_tunes.with_raw_response.get_events(
@@ -423,7 +423,7 @@ class TestAsyncFineTunes:
         fine_tune = await response.parse()
         assert_matches_type(FineTuneGetEventsResponse, fine_tune, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_get_events(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         async with async_client.fine_tunes.with_streaming_response.get_events(
@@ -437,7 +437,7 @@ class TestAsyncFineTunes:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_get_events(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `fine_tune_id` but received ''"):
