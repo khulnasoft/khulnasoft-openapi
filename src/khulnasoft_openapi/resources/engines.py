@@ -28,6 +28,8 @@ __all__ = ["EnginesResource", "AsyncEnginesResource"]
 
 
 class EnginesResource(SyncAPIResource):
+    """The KhulnaSoft REST API"""
+
     @cached_property
     def with_raw_response(self) -> EnginesResourceWithRawResponse:
         """
@@ -381,6 +383,8 @@ class EnginesResource(SyncAPIResource):
 
 
 class AsyncEnginesResource(AsyncAPIResource):
+    """The KhulnaSoft REST API"""
+
     @cached_property
     def with_raw_response(self) -> AsyncEnginesResourceWithRawResponse:
         """

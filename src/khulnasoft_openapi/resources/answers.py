@@ -24,6 +24,8 @@ __all__ = ["AnswersResource", "AsyncAnswersResource"]
 
 
 class AnswersResource(SyncAPIResource):
+    """The KhulnaSoft REST API"""
+
     @cached_property
     def with_raw_response(self) -> AnswersResourceWithRawResponse:
         """
@@ -197,6 +199,8 @@ class AnswersResource(SyncAPIResource):
 
 
 class AsyncAnswersResource(AsyncAPIResource):
+    """The KhulnaSoft REST API"""
+
     @cached_property
     def with_raw_response(self) -> AsyncAnswersResourceWithRawResponse:
         """
