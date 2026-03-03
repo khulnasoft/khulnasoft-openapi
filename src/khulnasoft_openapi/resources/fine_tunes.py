@@ -26,6 +26,8 @@ __all__ = ["FineTunesResource", "AsyncFineTunesResource"]
 
 
 class FineTunesResource(SyncAPIResource):
+    """The KhulnaSoft REST API"""
+
     @cached_property
     def with_raw_response(self) -> FineTunesResourceWithRawResponse:
         """
@@ -324,6 +326,8 @@ class FineTunesResource(SyncAPIResource):
 
 
 class AsyncFineTunesResource(AsyncAPIResource):
+    """The KhulnaSoft REST API"""
+
     @cached_property
     def with_raw_response(self) -> AsyncFineTunesResourceWithRawResponse:
         """

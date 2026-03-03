@@ -104,30 +104,35 @@ class KhulnasoftOpenAPI(SyncAPIClient):
 
     @cached_property
     def engines(self) -> EnginesResource:
+        """The KhulnaSoft REST API"""
         from .resources.engines import EnginesResource
 
         return EnginesResource(self)
 
     @cached_property
     def files(self) -> FilesResource:
+        """The KhulnaSoft REST API"""
         from .resources.files import FilesResource
 
         return FilesResource(self)
 
     @cached_property
     def answers(self) -> AnswersResource:
+        """The KhulnaSoft REST API"""
         from .resources.answers import AnswersResource
 
         return AnswersResource(self)
 
     @cached_property
     def classifications(self) -> ClassificationsResource:
+        """The KhulnaSoft REST API"""
         from .resources.classifications import ClassificationsResource
 
         return ClassificationsResource(self)
 
     @cached_property
     def fine_tunes(self) -> FineTunesResource:
+        """The KhulnaSoft REST API"""
         from .resources.fine_tunes import FineTunesResource
 
         return FineTunesResource(self)
@@ -309,30 +314,35 @@ class AsyncKhulnasoftOpenAPI(AsyncAPIClient):
 
     @cached_property
     def engines(self) -> AsyncEnginesResource:
+        """The KhulnaSoft REST API"""
         from .resources.engines import AsyncEnginesResource
 
         return AsyncEnginesResource(self)
 
     @cached_property
     def files(self) -> AsyncFilesResource:
+        """The KhulnaSoft REST API"""
         from .resources.files import AsyncFilesResource
 
         return AsyncFilesResource(self)
 
     @cached_property
     def answers(self) -> AsyncAnswersResource:
+        """The KhulnaSoft REST API"""
         from .resources.answers import AsyncAnswersResource
 
         return AsyncAnswersResource(self)
 
     @cached_property
     def classifications(self) -> AsyncClassificationsResource:
+        """The KhulnaSoft REST API"""
         from .resources.classifications import AsyncClassificationsResource
 
         return AsyncClassificationsResource(self)
 
     @cached_property
     def fine_tunes(self) -> AsyncFineTunesResource:
+        """The KhulnaSoft REST API"""
         from .resources.fine_tunes import AsyncFineTunesResource
 
         return AsyncFineTunesResource(self)
@@ -469,30 +479,35 @@ class KhulnasoftOpenAPIWithRawResponse:
 
     @cached_property
     def engines(self) -> engines.EnginesResourceWithRawResponse:
+        """The KhulnaSoft REST API"""
         from .resources.engines import EnginesResourceWithRawResponse
 
         return EnginesResourceWithRawResponse(self._client.engines)
 
     @cached_property
     def files(self) -> files.FilesResourceWithRawResponse:
+        """The KhulnaSoft REST API"""
         from .resources.files import FilesResourceWithRawResponse
 
         return FilesResourceWithRawResponse(self._client.files)
 
     @cached_property
     def answers(self) -> answers.AnswersResourceWithRawResponse:
+        """The KhulnaSoft REST API"""
         from .resources.answers import AnswersResourceWithRawResponse
 
         return AnswersResourceWithRawResponse(self._client.answers)
 
     @cached_property
     def classifications(self) -> classifications.ClassificationsResourceWithRawResponse:
+        """The KhulnaSoft REST API"""
         from .resources.classifications import ClassificationsResourceWithRawResponse
 
         return ClassificationsResourceWithRawResponse(self._client.classifications)
 
     @cached_property
     def fine_tunes(self) -> fine_tunes.FineTunesResourceWithRawResponse:
+        """The KhulnaSoft REST API"""
         from .resources.fine_tunes import FineTunesResourceWithRawResponse
 
         return FineTunesResourceWithRawResponse(self._client.fine_tunes)
@@ -506,30 +521,35 @@ class AsyncKhulnasoftOpenAPIWithRawResponse:
 
     @cached_property
     def engines(self) -> engines.AsyncEnginesResourceWithRawResponse:
+        """The KhulnaSoft REST API"""
         from .resources.engines import AsyncEnginesResourceWithRawResponse
 
         return AsyncEnginesResourceWithRawResponse(self._client.engines)
 
     @cached_property
     def files(self) -> files.AsyncFilesResourceWithRawResponse:
+        """The KhulnaSoft REST API"""
         from .resources.files import AsyncFilesResourceWithRawResponse
 
         return AsyncFilesResourceWithRawResponse(self._client.files)
 
     @cached_property
     def answers(self) -> answers.AsyncAnswersResourceWithRawResponse:
+        """The KhulnaSoft REST API"""
         from .resources.answers import AsyncAnswersResourceWithRawResponse
 
         return AsyncAnswersResourceWithRawResponse(self._client.answers)
 
     @cached_property
     def classifications(self) -> classifications.AsyncClassificationsResourceWithRawResponse:
+        """The KhulnaSoft REST API"""
         from .resources.classifications import AsyncClassificationsResourceWithRawResponse
 
         return AsyncClassificationsResourceWithRawResponse(self._client.classifications)
 
     @cached_property
     def fine_tunes(self) -> fine_tunes.AsyncFineTunesResourceWithRawResponse:
+        """The KhulnaSoft REST API"""
         from .resources.fine_tunes import AsyncFineTunesResourceWithRawResponse
 
         return AsyncFineTunesResourceWithRawResponse(self._client.fine_tunes)
@@ -543,30 +563,35 @@ class KhulnasoftOpenAPIWithStreamedResponse:
 
     @cached_property
     def engines(self) -> engines.EnginesResourceWithStreamingResponse:
+        """The KhulnaSoft REST API"""
         from .resources.engines import EnginesResourceWithStreamingResponse
 
         return EnginesResourceWithStreamingResponse(self._client.engines)
 
     @cached_property
     def files(self) -> files.FilesResourceWithStreamingResponse:
+        """The KhulnaSoft REST API"""
         from .resources.files import FilesResourceWithStreamingResponse
 
         return FilesResourceWithStreamingResponse(self._client.files)
 
     @cached_property
     def answers(self) -> answers.AnswersResourceWithStreamingResponse:
+        """The KhulnaSoft REST API"""
         from .resources.answers import AnswersResourceWithStreamingResponse
 
         return AnswersResourceWithStreamingResponse(self._client.answers)
 
     @cached_property
     def classifications(self) -> classifications.ClassificationsResourceWithStreamingResponse:
+        """The KhulnaSoft REST API"""
         from .resources.classifications import ClassificationsResourceWithStreamingResponse
 
         return ClassificationsResourceWithStreamingResponse(self._client.classifications)
 
     @cached_property
     def fine_tunes(self) -> fine_tunes.FineTunesResourceWithStreamingResponse:
+        """The KhulnaSoft REST API"""
         from .resources.fine_tunes import FineTunesResourceWithStreamingResponse
 
         return FineTunesResourceWithStreamingResponse(self._client.fine_tunes)
@@ -580,30 +605,35 @@ class AsyncKhulnasoftOpenAPIWithStreamedResponse:
 
     @cached_property
     def engines(self) -> engines.AsyncEnginesResourceWithStreamingResponse:
+        """The KhulnaSoft REST API"""
         from .resources.engines import AsyncEnginesResourceWithStreamingResponse
 
         return AsyncEnginesResourceWithStreamingResponse(self._client.engines)
 
     @cached_property
     def files(self) -> files.AsyncFilesResourceWithStreamingResponse:
+        """The KhulnaSoft REST API"""
         from .resources.files import AsyncFilesResourceWithStreamingResponse
 
         return AsyncFilesResourceWithStreamingResponse(self._client.files)
 
     @cached_property
     def answers(self) -> answers.AsyncAnswersResourceWithStreamingResponse:
+        """The KhulnaSoft REST API"""
         from .resources.answers import AsyncAnswersResourceWithStreamingResponse
 
         return AsyncAnswersResourceWithStreamingResponse(self._client.answers)
 
     @cached_property
     def classifications(self) -> classifications.AsyncClassificationsResourceWithStreamingResponse:
+        """The KhulnaSoft REST API"""
         from .resources.classifications import AsyncClassificationsResourceWithStreamingResponse
 
         return AsyncClassificationsResourceWithStreamingResponse(self._client.classifications)
 
     @cached_property
     def fine_tunes(self) -> fine_tunes.AsyncFineTunesResourceWithStreamingResponse:
+        """The KhulnaSoft REST API"""
         from .resources.fine_tunes import AsyncFineTunesResourceWithStreamingResponse
 
         return AsyncFineTunesResourceWithStreamingResponse(self._client.fine_tunes)

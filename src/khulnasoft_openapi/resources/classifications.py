@@ -24,6 +24,8 @@ __all__ = ["ClassificationsResource", "AsyncClassificationsResource"]
 
 
 class ClassificationsResource(SyncAPIResource):
+    """The KhulnaSoft REST API"""
+
     @cached_property
     def with_raw_response(self) -> ClassificationsResourceWithRawResponse:
         """
@@ -186,6 +188,8 @@ class ClassificationsResource(SyncAPIResource):
 
 
 class AsyncClassificationsResource(AsyncAPIResource):
+    """The KhulnaSoft REST API"""
+
     @cached_property
     def with_raw_response(self) -> AsyncClassificationsResourceWithRawResponse:
         """
