@@ -179,7 +179,7 @@ class TestFiles:
     @parametrize
     def test_method_upload(self, client: KhulnasoftOpenAPI) -> None:
         file = client.files.upload(
-            file=b"raw file contents",
+            file=b"Example data",
             purpose="purpose",
         )
         assert_matches_type(KhulnaSoftFile, file, path=["response"])
@@ -188,7 +188,7 @@ class TestFiles:
     @parametrize
     def test_raw_response_upload(self, client: KhulnasoftOpenAPI) -> None:
         response = client.files.with_raw_response.upload(
-            file=b"raw file contents",
+            file=b"Example data",
             purpose="purpose",
         )
 
@@ -201,7 +201,7 @@ class TestFiles:
     @parametrize
     def test_streaming_response_upload(self, client: KhulnasoftOpenAPI) -> None:
         with client.files.with_streaming_response.upload(
-            file=b"raw file contents",
+            file=b"Example data",
             purpose="purpose",
         ) as response:
             assert not response.is_closed
@@ -376,7 +376,7 @@ class TestAsyncFiles:
     @parametrize
     async def test_method_upload(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         file = await async_client.files.upload(
-            file=b"raw file contents",
+            file=b"Example data",
             purpose="purpose",
         )
         assert_matches_type(KhulnaSoftFile, file, path=["response"])
@@ -385,7 +385,7 @@ class TestAsyncFiles:
     @parametrize
     async def test_raw_response_upload(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         response = await async_client.files.with_raw_response.upload(
-            file=b"raw file contents",
+            file=b"Example data",
             purpose="purpose",
         )
 
@@ -398,7 +398,7 @@ class TestAsyncFiles:
     @parametrize
     async def test_streaming_response_upload(self, async_client: AsyncKhulnasoftOpenAPI) -> None:
         async with async_client.files.with_streaming_response.upload(
-            file=b"raw file contents",
+            file=b"Example data",
             purpose="purpose",
         ) as response:
             assert not response.is_closed
