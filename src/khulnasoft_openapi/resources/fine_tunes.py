@@ -8,7 +8,7 @@ import httpx
 
 from ..types import fine_tune_create_params, fine_tune_get_events_params
 from .._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
-from .._utils import maybe_transform, async_maybe_transform
+from .._utils import path_template, maybe_transform, async_maybe_transform
 from .._compat import cached_property
 from .._resource import SyncAPIResource, AsyncAPIResource
 from .._response import (
@@ -219,7 +219,7 @@ class FineTunesResource(SyncAPIResource):
         if not fine_tune_id:
             raise ValueError(f"Expected a non-empty value for `fine_tune_id` but received {fine_tune_id!r}")
         return self._get(
-            f"/fine-tunes/{fine_tune_id}",
+            path_template("/fine-tunes/{fine_tune_id}", fine_tune_id=fine_tune_id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -271,7 +271,7 @@ class FineTunesResource(SyncAPIResource):
         if not fine_tune_id:
             raise ValueError(f"Expected a non-empty value for `fine_tune_id` but received {fine_tune_id!r}")
         return self._post(
-            f"/fine-tunes/{fine_tune_id}/cancel",
+            path_template("/fine-tunes/{fine_tune_id}/cancel", fine_tune_id=fine_tune_id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -313,7 +313,7 @@ class FineTunesResource(SyncAPIResource):
         if not fine_tune_id:
             raise ValueError(f"Expected a non-empty value for `fine_tune_id` but received {fine_tune_id!r}")
         return self._get(
-            f"/fine-tunes/{fine_tune_id}/events",
+            path_template("/fine-tunes/{fine_tune_id}/events", fine_tune_id=fine_tune_id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -519,7 +519,7 @@ class AsyncFineTunesResource(AsyncAPIResource):
         if not fine_tune_id:
             raise ValueError(f"Expected a non-empty value for `fine_tune_id` but received {fine_tune_id!r}")
         return await self._get(
-            f"/fine-tunes/{fine_tune_id}",
+            path_template("/fine-tunes/{fine_tune_id}", fine_tune_id=fine_tune_id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -571,7 +571,7 @@ class AsyncFineTunesResource(AsyncAPIResource):
         if not fine_tune_id:
             raise ValueError(f"Expected a non-empty value for `fine_tune_id` but received {fine_tune_id!r}")
         return await self._post(
-            f"/fine-tunes/{fine_tune_id}/cancel",
+            path_template("/fine-tunes/{fine_tune_id}/cancel", fine_tune_id=fine_tune_id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -613,7 +613,7 @@ class AsyncFineTunesResource(AsyncAPIResource):
         if not fine_tune_id:
             raise ValueError(f"Expected a non-empty value for `fine_tune_id` but received {fine_tune_id!r}")
         return await self._get(
-            f"/fine-tunes/{fine_tune_id}/events",
+            path_template("/fine-tunes/{fine_tune_id}/events", fine_tune_id=fine_tune_id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
