@@ -7,8 +7,9 @@ from typing import Mapping, cast
 import httpx
 
 from ..types import file_upload_params
+from .._files import deepcopy_with_paths
 from .._types import Body, Query, Headers, NotGiven, FileTypes, not_given
-from .._utils import extract_files, maybe_transform, deepcopy_minimal, async_maybe_transform
+from .._utils import extract_files, path_template, maybe_transform, async_maybe_transform
 from .._compat import cached_property
 from .._resource import SyncAPIResource, AsyncAPIResource
 from .._response import (
@@ -26,6 +27,8 @@ __all__ = ["FilesResource", "AsyncFilesResource"]
 
 
 class FilesResource(SyncAPIResource):
+    """The KhulnaSoft REST API"""
+
     @cached_property
     def with_raw_response(self) -> FilesResourceWithRawResponse:
         """
@@ -71,7 +74,7 @@ class FilesResource(SyncAPIResource):
         if not file_id:
             raise ValueError(f"Expected a non-empty value for `file_id` but received {file_id!r}")
         return self._get(
-            f"/files/{file_id}",
+            path_template("/files/{file_id}", file_id=file_id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -123,7 +126,7 @@ class FilesResource(SyncAPIResource):
         if not file_id:
             raise ValueError(f"Expected a non-empty value for `file_id` but received {file_id!r}")
         return self._delete(
-            f"/files/{file_id}",
+            path_template("/files/{file_id}", file_id=file_id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -156,7 +159,7 @@ class FilesResource(SyncAPIResource):
         if not file_id:
             raise ValueError(f"Expected a non-empty value for `file_id` but received {file_id!r}")
         return self._get(
-            f"/files/{file_id}/content",
+            path_template("/files/{file_id}/content", file_id=file_id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -215,11 +218,12 @@ class FilesResource(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        body = deepcopy_minimal(
+        body = deepcopy_with_paths(
             {
                 "file": file,
                 "purpose": purpose,
-            }
+            },
+            [["file"]],
         )
         files = extract_files(cast(Mapping[str, object], body), paths=[["file"]])
         # It should be noted that the actual Content-Type header that will be
@@ -238,6 +242,8 @@ class FilesResource(SyncAPIResource):
 
 
 class AsyncFilesResource(AsyncAPIResource):
+    """The KhulnaSoft REST API"""
+
     @cached_property
     def with_raw_response(self) -> AsyncFilesResourceWithRawResponse:
         """
@@ -283,7 +289,7 @@ class AsyncFilesResource(AsyncAPIResource):
         if not file_id:
             raise ValueError(f"Expected a non-empty value for `file_id` but received {file_id!r}")
         return await self._get(
-            f"/files/{file_id}",
+            path_template("/files/{file_id}", file_id=file_id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -335,7 +341,7 @@ class AsyncFilesResource(AsyncAPIResource):
         if not file_id:
             raise ValueError(f"Expected a non-empty value for `file_id` but received {file_id!r}")
         return await self._delete(
-            f"/files/{file_id}",
+            path_template("/files/{file_id}", file_id=file_id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -368,7 +374,7 @@ class AsyncFilesResource(AsyncAPIResource):
         if not file_id:
             raise ValueError(f"Expected a non-empty value for `file_id` but received {file_id!r}")
         return await self._get(
-            f"/files/{file_id}/content",
+            path_template("/files/{file_id}/content", file_id=file_id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -427,11 +433,12 @@ class AsyncFilesResource(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        body = deepcopy_minimal(
+        body = deepcopy_with_paths(
             {
                 "file": file,
                 "purpose": purpose,
-            }
+            },
+            [["file"]],
         )
         files = extract_files(cast(Mapping[str, object], body), paths=[["file"]])
         # It should be noted that the actual Content-Type header that will be

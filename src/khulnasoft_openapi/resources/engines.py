@@ -8,7 +8,7 @@ import httpx
 
 from ..types import engine_search_params, engine_create_embedding_params, engine_create_completion_params
 from .._types import Body, Omit, Query, Headers, NotGiven, SequenceNotStr, omit, not_given
-from .._utils import maybe_transform, async_maybe_transform
+from .._utils import path_template, maybe_transform, async_maybe_transform
 from .._compat import cached_property
 from .._resource import SyncAPIResource, AsyncAPIResource
 from .._response import (
@@ -28,6 +28,8 @@ __all__ = ["EnginesResource", "AsyncEnginesResource"]
 
 
 class EnginesResource(SyncAPIResource):
+    """The KhulnaSoft REST API"""
+
     @cached_property
     def with_raw_response(self) -> EnginesResourceWithRawResponse:
         """
@@ -74,7 +76,7 @@ class EnginesResource(SyncAPIResource):
         if not engine_id:
             raise ValueError(f"Expected a non-empty value for `engine_id` but received {engine_id!r}")
         return self._get(
-            f"/engines/{engine_id}",
+            path_template("/engines/{engine_id}", engine_id=engine_id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -230,7 +232,7 @@ class EnginesResource(SyncAPIResource):
         if not engine_id:
             raise ValueError(f"Expected a non-empty value for `engine_id` but received {engine_id!r}")
         return self._post(
-            f"/engines/{engine_id}/completions",
+            path_template("/engines/{engine_id}/completions", engine_id=engine_id),
             body=maybe_transform(
                 {
                     "best_of": best_of,
@@ -289,7 +291,7 @@ class EnginesResource(SyncAPIResource):
         if not engine_id:
             raise ValueError(f"Expected a non-empty value for `engine_id` but received {engine_id!r}")
         return self._post(
-            f"/engines/{engine_id}/embeddings",
+            path_template("/engines/{engine_id}/embeddings", engine_id=engine_id),
             body=maybe_transform({"input": input}, engine_create_embedding_params.EngineCreateEmbeddingParams),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
@@ -362,7 +364,7 @@ class EnginesResource(SyncAPIResource):
         if not engine_id:
             raise ValueError(f"Expected a non-empty value for `engine_id` but received {engine_id!r}")
         return self._post(
-            f"/engines/{engine_id}/search",
+            path_template("/engines/{engine_id}/search", engine_id=engine_id),
             body=maybe_transform(
                 {
                     "documents": documents,
@@ -381,6 +383,8 @@ class EnginesResource(SyncAPIResource):
 
 
 class AsyncEnginesResource(AsyncAPIResource):
+    """The KhulnaSoft REST API"""
+
     @cached_property
     def with_raw_response(self) -> AsyncEnginesResourceWithRawResponse:
         """
@@ -427,7 +431,7 @@ class AsyncEnginesResource(AsyncAPIResource):
         if not engine_id:
             raise ValueError(f"Expected a non-empty value for `engine_id` but received {engine_id!r}")
         return await self._get(
-            f"/engines/{engine_id}",
+            path_template("/engines/{engine_id}", engine_id=engine_id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -583,7 +587,7 @@ class AsyncEnginesResource(AsyncAPIResource):
         if not engine_id:
             raise ValueError(f"Expected a non-empty value for `engine_id` but received {engine_id!r}")
         return await self._post(
-            f"/engines/{engine_id}/completions",
+            path_template("/engines/{engine_id}/completions", engine_id=engine_id),
             body=await async_maybe_transform(
                 {
                     "best_of": best_of,
@@ -642,7 +646,7 @@ class AsyncEnginesResource(AsyncAPIResource):
         if not engine_id:
             raise ValueError(f"Expected a non-empty value for `engine_id` but received {engine_id!r}")
         return await self._post(
-            f"/engines/{engine_id}/embeddings",
+            path_template("/engines/{engine_id}/embeddings", engine_id=engine_id),
             body=await async_maybe_transform(
                 {"input": input}, engine_create_embedding_params.EngineCreateEmbeddingParams
             ),
@@ -717,7 +721,7 @@ class AsyncEnginesResource(AsyncAPIResource):
         if not engine_id:
             raise ValueError(f"Expected a non-empty value for `engine_id` but received {engine_id!r}")
         return await self._post(
-            f"/engines/{engine_id}/search",
+            path_template("/engines/{engine_id}/search", engine_id=engine_id),
             body=await async_maybe_transform(
                 {
                     "documents": documents,
