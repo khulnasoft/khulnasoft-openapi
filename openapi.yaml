@@ -22,6 +22,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListEnginesResponse'
+              example:
+                object: list
+                data:
+                  - id: engine-id-0
+                    object: engine
+                    owner: organization-owner
+                    ready: true
       oaiMeta:
         name: List engines
         group: engines
@@ -84,6 +91,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Engine'
+              example:
+                id: engine-id
+                object: engine
+                owner: khulnasoft
+                ready: true
       oaiMeta:
         name: Retrieve engine
         group: engines
@@ -124,6 +136,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateCompletionRequest'
+              example:
+                prompt: Once upon a time
+                max_tokens: 5
       responses:
         "200":
           description: OK
@@ -131,6 +146,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateCompletionResponse'
+              example:
+                id: cmpl-123
+                object: text_completion
+                created: 1589478378
+                model: engine:2020-05-03
+                choices:
+                  - text: ' there was a girl who'
+                    index: 0
+                    logprobs: null
+                    finish_reason: length
       oaiMeta:
         name: Create completion
         group: completions
@@ -205,6 +230,11 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateSearchRequest'
+              example:
+                documents:
+                  - White House
+                  - hospital
+                query: the president
       responses:
         "200":
           description: OK
@@ -212,6 +242,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateSearchResponse'
+              example:
+                object: list
+                data:
+                  - document: 0
+                    object: search_result
+                    score: 215.412
       oaiMeta:
         name: Create search
         group: searches
@@ -277,6 +313,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListFilesResponse'
+              example:
+                object: list
+                data:
+                  - id: file-1
+                    object: file
+                    bytes: 175
+                    filename: train.jsonl
       oaiMeta:
         name: List files
         group: files
@@ -322,9 +365,12 @@ paths:
       requestBody:
         required: true
         content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/CreateFileRequest'
+              multipart/form-data:
+                schema:
+                  $ref: '#/components/schemas/CreateFileRequest'
+                example:
+                  file: train.jsonl
+                  purpose: search
       responses:
         "200":
           description: OK
@@ -332,6 +378,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/KhulnaSoftFile'
+              example:
+                id: file-1
+                object: file
+                bytes: 175
+                created_at: 1613677385
+                filename: train.jsonl
+                purpose: search
       oaiMeta:
         name: Upload file
         group: files
@@ -381,6 +434,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DeleteFileResponse'
+              example:
+                id: file-id
+                object: file
+                deleted: true
       oaiMeta:
         name: Delete file
         group: files
@@ -420,6 +477,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/KhulnaSoftFile'
+              example:
+                id: file-id
+                object: file
+                bytes: 140
+                created_at: 1613677385
+                filename: puppy.jsonl
+                purpose: search
       oaiMeta:
         name: Retrieve file
         group: files
@@ -463,6 +527,7 @@ paths:
             application/json:
               schema:
                 type: string
+              example: file contents here
       oaiMeta:
         name: Retrieve file content
         group: files
@@ -492,6 +557,11 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateAnswerRequest'
+              example:
+                question: What is the capital of Japan?
+                documents:
+                  - Japan is an island country
+                max_tokens: 5
       responses:
         "200":
           description: OK
@@ -499,6 +569,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateAnswerResponse'
+              example:
+                answers:
+                  - Tokyo
+                completion: cmpl-123
+                object: answer
+                model: curie:2020-05-03
+                search_model: ada
+                selected_documents:
+                  - document: 0
+                    text: Japan is an island country.
       oaiMeta:
         name: Create answer
         group: answers
@@ -588,6 +668,16 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateClassificationRequest'
+              example:
+                query: It is a raining day :(
+                examples:
+                  - - A happy moment
+                      - Positive
+                  - - It is quite boring.
+                      - Negative
+                labels:
+                  - Positive
+                  - Negative
       responses:
         "200":
           description: OK
@@ -595,6 +685,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateClassificationResponse'
+              example:
+                completion: cmpl-123
+                label: Negative
+                object: classification
+                model: curie:2020-05-03
+                search_model: ada
+                selected_examples:
+                  - document: 0
+                    label: Negative
+                    text: I am sad.
       oaiMeta:
         name: Create classification
         group: classifications
@@ -686,6 +786,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateFineTuneRequest'
+              example:
+                training_file: file-123
       responses:
         "200":
           description: OK
@@ -693,6 +795,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FineTune'
+              example:
+                id: ft-123
+                object: fine-tune
+                model: curie
+                status: pending
+                created_at: 1614807352
       oaiMeta:
         name: Create fine-tune
         group: fine-tunes
@@ -762,6 +870,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListFineTunesResponse'
+              example:
+                object: list
+                data:
+                  - id: ft-123
+                    object: fine-tune
+                    model: curie
+                    status: pending
+                    created_at: 1614807352
       oaiMeta:
         name: List fine-tunes
         group: fine-tunes
@@ -825,6 +941,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FineTune'
+              example:
+                id: ft-123
+                object: fine-tune
+                model: curie
+                status: succeeded
+                created_at: 1614807352
+                fine_tuned_model: curie:ft-123
       oaiMeta:
         name: Retrieve fine-tune
         group: fine-tunes
@@ -934,6 +1057,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FineTune'
+              example:
+                id: ft-123
+                object: fine-tune
+                status: cancelled
+                created_at: 1614807352
       oaiMeta:
         name: Cancel fine-tune
         group: fine-tunes
@@ -1014,6 +1142,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListFineTuneEventsResponse'
+              example:
+                object: list
+                data:
+                  - object: fine-tune-event
+                    created_at: 1614807352
+                    level: info
+                    message: Job enqueued.
       oaiMeta:
         name: List fine-tune events
         group: fine-tunes
@@ -1086,6 +1221,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateEmbeddingRequest'
+              example:
+                input: The food was delicious and the waiter...
       responses:
         "200":
           description: OK
@@ -1093,6 +1230,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateEmbeddingResponse'
+              example:
+                object: list
+                data:
+                  - object: embedding
+                    embedding:
+                      - 0.0189
+                      - -0.0073
+                    index: 0
+                model: ada-similarity-model:2021-09-01
       oaiMeta:
         name: Create embeddings
         group: embeddings
@@ -1138,6 +1284,7 @@ paths:
 components:
   schemas:
     ListEnginesResponse:
+      description: A list of engines available in the KhulnaSoft API.
       type: object
       properties:
         object:
@@ -1148,6 +1295,7 @@ components:
             $ref: '#/components/schemas/Engine'
 
     CreateCompletionRequest:
+      description: Request body for creating a completion.
       type: object
       properties:
         prompt:
@@ -1310,6 +1458,7 @@ components:
             As an example, you can pass `{"50256": -100}` to prevent the <|endoftext|> token from being generated.
 
     CreateCompletionResponse:
+      description: Response from creating a completion.
       type: object
       properties:
         id:
@@ -1353,6 +1502,7 @@ components:
                 type: string
 
     CreateSearchRequest:
+      description: Request body for creating a search.
       type: object
       properties:
         documents:
@@ -1401,6 +1551,7 @@ components:
           nullable: true
 
     CreateSearchResponse:
+      description: Response from creating a search.
       type: object
       properties:
         object:
@@ -1420,6 +1571,7 @@ components:
                 type: number
 
     ListFilesResponse:
+      description: A list of files belonging to the organization.
       type: object
       properties:
         object:
@@ -1430,6 +1582,7 @@ components:
             $ref: '#/components/schemas/KhulnaSoftFile'
 
     CreateFileRequest:
+      description: Request body for uploading a file.
       type: object
       additionalProperties: false
       properties:
@@ -1456,6 +1609,7 @@ components:
         - purpose
 
     DeleteFileResponse:
+      description: Response confirming a file has been deleted.
       type: object
       properties:
         id:
@@ -1466,6 +1620,7 @@ components:
           type: boolean
 
     CreateAnswerRequest:
+      description: Request body for creating an answer.
       type: object
       additionalProperties: false
       properties:
@@ -1582,6 +1737,7 @@ components:
           default: []
 
     CreateAnswerResponse:
+      description: Response from creating an answer.
       type: object
       properties:
         object:
@@ -1607,6 +1763,7 @@ components:
                 type: string
 
     CreateClassificationRequest:
+      description: Request body for creating a classification.
       type: object
       additionalProperties: false
       properties:
@@ -1676,6 +1833,7 @@ components:
         expand: *expand_configuration
 
     CreateClassificationResponse:
+      description: Response from creating a classification.
       type: object
       properties:
         object:
@@ -1701,6 +1859,7 @@ components:
                 type: string
 
     CreateFineTuneRequest:
+      description: Request body for creating a fine-tune job.
       type: object
       properties:
         training_file:
@@ -1836,6 +1995,7 @@ components:
           nullable: true
 
     ListFineTunesResponse:
+      description: A list of fine-tune jobs.
       type: object
       properties:
         object:
@@ -1846,6 +2006,7 @@ components:
             $ref: '#/components/schemas/FineTune'
 
     ListFineTuneEventsResponse:
+      description: A list of fine-tune events.
       type: object
       properties:
         object:
@@ -1856,6 +2017,7 @@ components:
             $ref: '#/components/schemas/FineTuneEvent'
 
     CreateEmbeddingRequest:
+      description: Request body for creating an embedding.
       type: object
       additionalProperties: false
       properties:
@@ -1892,6 +2054,7 @@ components:
               example: "[[1212, 318, 257, 1332, 13]]"
 
     CreateEmbeddingResponse:
+      description: Response from creating an embedding.
       type: object
       properties:
         object:

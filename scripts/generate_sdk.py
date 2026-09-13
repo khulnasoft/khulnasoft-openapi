@@ -1,6 +1,7 @@
 import argparse
 import sys
 import yaml
+import json
 import shutil
 import subprocess
 from pathlib import Path
@@ -64,8 +65,8 @@ def sanitize_spec_object(obj):
 
 def generate_sanitized_spec(sanitized_spec_path):
     """
-    Create a sanitized version of the publicly available spec that can be used
-    to generate SDKs.
+    Create sanitized versions of the spec (both YAML and JSON)
+    that can be used to generate SDKs.
     """
     root_dir = Path(__file__).parent.parent
     input_path = root_dir / "openapi.yaml"
@@ -78,13 +79,22 @@ def generate_sanitized_spec(sanitized_spec_path):
     with open(input_path, "r") as input_file:
         spec = yaml.safe_load(input_file)
         sanitize_spec_object(spec)
-        with open(sanitized_spec_path, "w") as output_file:
-            yaml.dump(spec, output_file, Dumper=NoAliasDumper, sort_keys=False)
-    print(f"Sanitized spec written to {sanitized_spec_path}")
+
+    sanitized_yaml_path = Path(str(sanitized_spec_path) + ".yaml")
+    sanitized_json_path = Path(str(sanitized_spec_path) + ".json")
+
+    with open(sanitized_yaml_path, "w") as output_file:
+        yaml.dump(spec, output_file, Dumper=NoAliasDumper, sort_keys=False)
+    print(f"Sanitized YAML spec written to {sanitized_yaml_path}")
+
+    with open(sanitized_json_path, "w") as output_file:
+        json.dump(spec, output_file, indent=2)
+    print(f"Sanitized JSON spec written to {sanitized_json_path}")
+
+    return sanitized_yaml_path, sanitized_json_path
 
 def check_dependencies():
     """Check if openapi-generator is installed and return the command name."""
-    # Check for both possible command names
     if shutil.which("openapi-generator"):
         return "openapi-generator"
     elif shutil.which("openapi-generator-cli"):
@@ -96,21 +106,18 @@ def check_dependencies():
         print("  npm install -g @openapitools/openapi-generator-cli")
         sys.exit(1)
 
-def generate_sdk(sanitized_spec_path, sdk_type, output_path):
+def generate_sdk(sanitized_yaml_path, sanitized_json_path, sdk_type, output_path):
     """Use openapi-generator to generate the SDK."""
     generator_cmd = check_dependencies()
     
-    root_dir = Path(__file__).parent.parent
-    output_dir = Path(output_path)  # output_path is relative to cwd normally, but we can respect it as is
-    
-    # Ensure output path exists or let openapi-generator handle it
+    output_dir = Path(output_path)
     print(f"Generating {sdk_type} SDK to {output_dir}...")
 
     if sdk_type == "node":
-        template_override_path = root_dir / "sdk-template-overrides/typescript-axios"
+        template_override_path = Path(__file__).parent.parent / "sdk-template-overrides/typescript-axios"
         command = [
             generator_cmd, "generate",
-            "-i", str(sanitized_spec_path),
+            "-i", str(sanitized_json_path),
             "-g", "typescript-axios",
             "-o", str(output_dir),
             "-p", "supportsES6=true",
@@ -139,13 +146,16 @@ if __name__ == "__main__":
         print("Use -o to specify the output directory")
         sys.exit(1)
 
-    # Use a temp path relative to this script or just in cwd
-    sanitized_spec_path = Path("openapi-sanitized-tmp.yaml")
+    sanitized_spec_path = Path("openapi-sanitized-tmp")
     
     try:
-        generate_sanitized_spec(sanitized_spec_path)
-        generate_sdk(sanitized_spec_path, args.sdk, args.output)
+        sanitized_yaml_path, sanitized_json_path = generate_sanitized_spec(sanitized_spec_path)
+        generate_sdk(sanitized_yaml_path, sanitized_json_path, args.sdk, args.output)
     finally:
-        if sanitized_spec_path.exists():
-            print("Cleaning up temporary sanitized spec file...")
-            sanitized_spec_path.unlink()
+        pass
+
+    # Copy sanitized specs to output directory
+    output_dir = Path(args.output)
+    shutil.copy2(sanitized_yaml_path, output_dir / "openapi.yaml")
+    shutil.copy2(sanitized_json_path, output_dir / "openapi.json")
+    print(f"Copied sanitized spec files to {output_dir}/")

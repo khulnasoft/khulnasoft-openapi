@@ -2,7 +2,7 @@
 
 help:
 	@echo "Available targets:"
-	@echo "  make sdk       - Generate TypeScript SDK"
+	@echo "  make sdk       - Generate TypeScript SDK (openapi.json + openapi.yaml)"
 	@echo "  make validate  - Validate OpenAPI specification"
 	@echo "  make clean     - Remove generated SDK files"
 

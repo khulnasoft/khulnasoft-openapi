@@ -1,5 +1,9 @@
 # OpenAI Generator temp file
 openapi-sanitized-tmp.yaml
+openapi-sanitized-tmp.json
+
+# Generated specs
+openapi.json
 
 # Python
 __pycache__/
