@@ -1,6 +1,7 @@
-# OpenAI Generator temp file
+# OpenAI Generator temp files
 openapi-sanitized-tmp.yaml
 openapi-sanitized-tmp.json
+openapi-temp-validate.yaml
 
 # Generated specs
 openapi.json
