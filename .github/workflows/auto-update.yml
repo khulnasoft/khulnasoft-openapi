@@ -37,8 +37,6 @@ jobs:
         run: npm install -g @openapitools/openapi-generator-cli
 
       - name: Auto-update OpenAPI spec
-        env:
-          KHULNASOFT_API_KEY: ${{ secrets.KHULNASOFT_API_KEY }}
         run: |
           python3 scripts/update_spec.py
 
@@ -58,7 +56,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add openapi.yaml openapi-sanitized-tmp.* generated_sdks/
+          git add openapi.yaml openapi.json generated_sdks/
           git commit -m "feat: auto-update openapi.yaml and SDK from publisher"
           git push
 
