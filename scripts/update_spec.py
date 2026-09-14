@@ -5,6 +5,7 @@ Fetches the latest OpenAPI spec, preserves custom oaiMeta fields, and validates.
 """
 
 import sys
+import os
 import yaml
 import json
 import urllib.request
@@ -14,7 +15,8 @@ from pathlib import Path
 
 ROOT_DIR = Path(__file__).parent.parent
 SPEC_PATH = ROOT_DIR / "openapi.yaml"
-PUBLISHER_URL = "https://api.khulnasoft.com/v1/openapi.json"
+PUBLISHER_URL = os.environ.get("PUBLISHER_URL") or "https://api.khulnasoft.com/v1/openapi.json"
+PUBLISHER_API_KEY = os.environ.get("KHULNASOFT_API_KEY", "")
 
 class NoAliasDumper(yaml.Dumper):
     def ignore_aliases(self, data):
@@ -26,12 +28,18 @@ def load_spec(path):
 
 def fetch_publisher_spec():
     print(f"Fetching spec from {PUBLISHER_URL}...")
+    headers = {"User-Agent": "khulnasoft-openapi/1.0"}
+    if PUBLISHER_API_KEY:
+        headers["Authorization"] = f"Bearer {PUBLISHER_API_KEY}"
     try:
-        req = urllib.request.Request(PUBLISHER_URL, headers={"User-Agent": "khulnasoft-openapi/1.0"})
+        req = urllib.request.Request(PUBLISHER_URL, headers=headers)
         with urllib.request.urlopen(req, timeout=30) as response:
             spec = json.loads(response.read().decode("utf-8"))
         print("Publisher spec fetched successfully.")
         return spec
+    except urllib.error.HTTPError as e:
+        print(f"Error fetching publisher spec: HTTP {e.code} {e.reason}")
+        sys.exit(1)
     except urllib.error.URLError as e:
         print(f"Error fetching publisher spec: {e}")
         sys.exit(1)
