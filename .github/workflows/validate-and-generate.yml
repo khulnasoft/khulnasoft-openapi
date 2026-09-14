@@ -25,14 +25,9 @@ jobs:
       run: |
         pip install pyyaml
         
-    # Note: We use our custom validation script instead of openapi-generator-cli validate
-    # because the spec contains custom 'oai*' fields for documentation that are filtered
-    # out during SDK generation. These fields would cause validation errors but are
-    # intentional and handled by our generate_sdk.py script.
     - name: Validate OpenAPI spec
       run: |
-        python3 scripts/validate_spec.py || true
-        echo "Note: Validation warnings are informational only"
+        python3 scripts/validate_spec.py
         
   generate-sdk:
     name: Generate TypeScript SDK
@@ -62,7 +57,12 @@ jobs:
       
     - name: Generate TypeScript SDK
       run: make sdk
-      
+    
+    - name: Verify generated specs
+      run: |
+        ls generated_sdks/typescript/openapi.json
+        ls generated_sdks/typescript/openapi.yaml
+    
     - name: Upload SDK artifact
       uses: actions/upload-artifact@v4
       with:

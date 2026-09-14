@@ -1,0 +1,142 @@
+#!/usr/bin/env python3
+"""
+Auto-update openapi.yaml from the publisher service.
+Fetches the latest OpenAPI spec, preserves custom oaiMeta fields, and validates.
+"""
+
+import sys
+import os
+import yaml
+import json
+import urllib.request
+import urllib.error
+import subprocess
+from pathlib import Path
+
+ROOT_DIR = Path(__file__).parent.parent
+SPEC_PATH = ROOT_DIR / "openapi.yaml"
+PUBLISHER_URL = os.environ.get("PUBLISHER_URL") or "https://api.khulnasoft.com/v1/openapi.json"
+PUBLISHER_API_KEY = os.environ.get("KHULNASOFT_API_KEY", "")
+
+class NoAliasDumper(yaml.Dumper):
+    def ignore_aliases(self, data):
+        return True
+
+def load_spec(path):
+    with open(path, "r") as f:
+        return yaml.safe_load(f)
+
+def fetch_publisher_spec():
+    print(f"Fetching spec from {PUBLISHER_URL}...")
+    headers = {"User-Agent": "khulnasoft-openapi/1.0"}
+    if PUBLISHER_API_KEY:
+        headers["Authorization"] = f"Bearer {PUBLISHER_API_KEY}"
+    try:
+        req = urllib.request.Request(PUBLISHER_URL, headers=headers)
+        with urllib.request.urlopen(req, timeout=30) as response:
+            spec = json.loads(response.read().decode("utf-8"))
+        print("Publisher spec fetched successfully.")
+        return spec
+    except urllib.error.HTTPError as e:
+        print(f"Error fetching publisher spec: HTTP {e.code} {e.reason}")
+        sys.exit(1)
+    except urllib.error.URLError as e:
+        print(f"Error fetching publisher spec: {e}")
+        sys.exit(1)
+
+def extract_oai_meta(spec):
+    meta = {}
+    if "paths" in spec:
+        for path, path_item in spec["paths"].items():
+            for method, operation in path_item.items():
+                if method.startswith("x-"):
+                    continue
+                if "oaiMeta" in operation:
+                    meta.setdefault("paths", {}).setdefault(path, {})[method] = operation.pop("oaiMeta")
+    if "components" in spec and "schemas" in spec["components"]:
+        for schema_name, schema in spec["components"]["schemas"].items():
+            if isinstance(schema, dict) and "oaiMeta" in schema:
+                meta.setdefault("components", {}).setdefault("schemas", {}).setdefault(schema_name, {})["oaiMeta"] = schema.pop("oaiMeta")
+    return meta
+
+def merge_oai_meta(fresh_spec, preserved_meta):
+    if "paths" in preserved_meta:
+        for path, path_item in preserved_meta["paths"].items():
+            if path not in fresh_spec.get("paths", {}):
+                print(f"Warning: Path {path} not found in fresh spec, skipping oaiMeta")
+                continue
+            for method, meta in path_item.items():
+                if method in fresh_spec["paths"][path]:
+                    fresh_spec["paths"][path][method]["oaiMeta"] = meta
+    if "components" in preserved_meta and "schemas" in preserved_meta["components"]:
+        for schema_name, schema_meta in preserved_meta["components"]["schemas"].items():
+            if schema_name in fresh_spec.get("components", {}).get("schemas", {}):
+                fresh_spec["components"]["schemas"][schema_name]["oaiMeta"] = schema_meta
+    return fresh_spec
+
+def validate_spec(spec):
+    backup_content = ""
+    with open(SPEC_PATH, "r") as f:
+        backup_content = f.read()
+    with open(SPEC_PATH, "w") as f:
+        yaml.dump(spec, f, Dumper=NoAliasDumper, sort_keys=False, default_flow_style=False)
+    try:
+        result = subprocess.run(
+            ["python3", str(ROOT_DIR / "scripts" / "validate_spec.py")],
+            capture_output=True, text=True
+        )
+        print(result.stdout.strip())
+        return result.returncode == 0
+    finally:
+        with open(SPEC_PATH, "w") as f:
+            f.write(backup_content)
+
+def write_spec(spec):
+    with open(SPEC_PATH, "w") as f:
+        yaml.dump(spec, f, Dumper=NoAliasDumper, sort_keys=False, default_flow_style=False)
+    print(f"Updated {SPEC_PATH}")
+    json_path = SPEC_PATH.with_suffix(".json")
+    with open(json_path, "w") as f:
+        json.dump(spec, f, indent=2)
+    print(f"Updated {json_path}")
+
+def main():
+    print("=" * 60)
+    print("Auto-update: KhulnaSoft OpenAPI Specification")
+    print("=" * 60)
+
+    print("\n[1/5] Extracting custom metadata from current spec...")
+    current_spec = load_spec(SPEC_PATH)
+    preserved_meta = extract_oai_meta(current_spec)
+    print(f"Preserved {len(preserved_meta.get('paths', {}))} path-level and {len(preserved_meta.get('components', {}).get('schemas', {}))} schema-level oaiMeta fields")
+
+    print("\n[2/5] Fetching fresh spec from publisher...")
+    fresh_spec = fetch_publisher_spec()
+
+    print("\n[3/5] Merging custom metadata...")
+    merged_spec = merge_oai_meta(fresh_spec, preserved_meta)
+
+    print("\n[4/5] Validating updated spec...")
+    if not validate_spec(merged_spec):
+        print("ERROR: Validation failed. Spec not updated.")
+        sys.exit(1)
+    print("Validation passed.")
+
+    print("\n[5/5] Writing updated spec and regenerating SDK...")
+    write_spec(merged_spec)
+
+    print("\nRegenerating SDK...")
+    subprocess.run(["make", "sdk"], check=True)
+    print("SDK regenerated successfully.")
+
+    # Clean up temp files generated by make sdk
+    for p in ROOT_DIR.glob("openapi-sanitized-tmp.*"):
+        p.unlink()
+        print(f"Cleaned up {p}")
+
+    print("\n" + "=" * 60)
+    print("Auto-update complete!")
+    print("=" * 60)
+
+if __name__ == "__main__":
+    main()
