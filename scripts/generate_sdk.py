@@ -146,7 +146,7 @@ if __name__ == "__main__":
         print("Use -o to specify the output directory")
         sys.exit(1)
 
-    sanitized_spec_path = Path("openapi-sanitized-tmp")
+    sanitized_spec_path = Path(__file__).parent.parent / "openapi-sanitized-tmp"
     
     try:
         sanitized_yaml_path, sanitized_json_path = generate_sanitized_spec(sanitized_spec_path)
